@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">  
+<head>    
+    <title>Recetario Digital | Prueba Técnica</title>    
+    <meta charset="UTF-8">
+    <meta name="title" content="Recetario digital">
+    <meta name="description" content="Descripción de la WEB">    
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <script src="js/bootstrap.js"></script>  
+</head>  
+<style>
+body {
+    background-image: url('img/pasta_back.jpg'); 
+    background-size: 50%;
+    background-position: right;
+    background-repeat: no-repeat;
+    background-color: rgba(255, 255, 255, 0.5);
+    background-blend-mode: lighten; 
+}
+</style>
+<body>  
+    <div class="row">
+        <div class="col logoprincipal">
+            <center>
+                <p>Recetario Digital</p>
+                <img class="imglogo" src="img/logologin.png" alt="Logo">
+            </center>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="boxlogin">
+                    <div class="card-body">
+                        <h3 class="text-center textosesion">Iniciar Sesión</h3>
+                        <form>
+                            <div class="mb-3">
+                                <label for="usuario" class="form-label textosesionsec">Usuario</label>
+                                <input type="text" class="form-control" id="usuario" placeholder="Ingrese su usuario" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label textosesionsec">Contraseña</label>
+                                <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+                        </form>
+                    </div>
+                
+            </div>
+        </div>
+
+    </div> 
+
+</body>  
+</html>

@@ -13,35 +13,185 @@
     </script> 
 </head>  
 <body>  
-    <div class="container-fluid">
-        <header class="txtbienvenida">
-            <h2>MÁS SABOR...</h2>
-            <h5>Bienvenido al mejor Recetario Digital</h5>      
-        </header>    
-        <nav>
-            <ul>
-                <li><a href="#">Categorias</a></li>
-        </ul>
-        </nav>
+    <div>
+        <header>
+            <nav class="navbar navbar-expand-lg principal navbar-dark">
+                <div class="container">
+                    <a class="navbar-brand textologo" href="#">
+                        <img class="imglogo" src="img/logo_recetario.png" alt="Logo">
+                        Recetario Digital
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item"><a class="nav-link" href="login.html">Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="txtbienvenida">
+            <h1>Recetario Digital</h1>      
+        </div>    
         <div class="container">
             <div class="row">
-                <div class="col">
-                    Este lugar esta especialmente diseñado para los amantes de la cocina, te compatiremos una gran cantidad de recetas practicas  y deliciosas para degustar en familia o en reuniones. ¡Te acompañaremos paso a paso para tu platillo perfecto para la ocación!
+                <div class="col descripcion">
+                    Este lugar esta especialmente diseñado para los amantes de la cocina, te compatiremos una gran cantidad de recetas practicas  y deliciosas para degustar en familia o en reuniones. ¡Te acompañaremos paso a paso para la elección de tu platillo perfecto para la ocación!
                 </div>
             </div>
-            <br>
+            
             <section>      
-                NUESTRAS OPCIONES
-            </section>
+                <p class="textosecundario">NUESTRAS OPCIONES</p>
+              
+                <div class="container">
+                    <!-- Filtro por Categorías -->
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <p class="textopciones">Filtrar por Categoría</p>
+                            <select class="form-select" id="categoriaFiltro" onchange="filtrarPorCategoria()">
+                                <option value="todos">Todas las categorías</option>
+                                <option value="entradas">Entradas</option>
+                                <option value="platos-principales">Platos principales</option>
+                                <option value="postres">Postres</option>
+                                <option value="bebidas">Bebidas</option>
+                            </select>
+                        </div>
+            
+                        <!-- Buscador de Platillos -->
+                        <div class="col-12 col-md-6">
+                            <p class="textopciones">Buscar Platillo</p>
+                            <input type="text" class="form-control" id="buscarPlatillo" placeholder="Buscar platillo..." onkeyup="buscarPlatillo()">
+                        </div>
+                    </div>
             <br>
-            <section>
-                PLATILLOS FAVORITOS
+                    <!-- Resultados de Platillos -->
+                    <div class="row resultados-container descripcion" id="resultados">
+                        <div class="col-12 col-md-4">
+                            <div class="card" data-categoria="entradas">
+                                <img src="platillo1.jpg" class="card-img-top" alt="Platillo 1">
+                                <div class="card-body">
+                                    <h5 class="card-title">Ensalada César</h5>
+                                    <p class="card-text">Entrada fresca con lechuga, pollo y aderezo.</p>
+                                    <button class="btn btn-favorito" onclick="agregarFavorito('Ensalada César', 'entrada')">Agregar a Favoritos</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="card" data-categoria="platos-principales">
+                                <img src="platillo2.jpg" class="card-img-top" alt="Platillo 2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Pizza Margherita</h5>
+                                    <p class="card-text">Pizza clásica con tomate, queso mozzarella y albahaca.</p>
+                                    <button class="btn btn-favorito" onclick="agregarFavorito('Pizza Margherita', 'plato principal')">Agregar a Favoritos</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="card" data-categoria="postres">
+                                <img src="platillo3.jpg" class="card-img-top" alt="Platillo 3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Tiramisú</h5>
+                                    <p class="card-text">Delicioso postre italiano con café y crema.</p>
+                                    <button class="btn btn-favorito" onclick="agregarFavorito('Tiramisú', 'postre')">Agregar a Favoritos</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="card" data-categoria="bebidas">
+                                <img src="platillo4.jpg" class="card-img-top" alt="Platillo 4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Café Latte</h5>
+                                    <p class="card-text">Bebida suave con leche vaporizada y café espresso.</p>
+                                    <button class="btn btn-favorito" onclick="agregarFavorito('Café Latte', 'bebida')">Agregar a Favoritos</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+
+                    <!-- Sección de Favoritos -->
+                    <div class="favoritos-container">
+                        <p class="textosecundario">MIS FAVORITOS</p>
+                        <ul id="favoritosLista" class="list-group">
+                            <!-- Favoritos aparecerán aquí -->
+                        </ul>
+                    </div>
+                </div>
+            
+                <script>
+                    let favoritos = [];
+            
+                    // Función para agregar un platillo a los favoritos
+                    function agregarFavorito(nombre, categoria) {
+                        // Verifica si el platillo ya está en los favoritos
+                        let favorito = { nombre: nombre, categoria: categoria };
+                        if (!favoritos.some(item => item.nombre === nombre)) {
+                            favoritos.push(favorito);
+                            mostrarFavoritos();
+                        } else {
+                            alert("Este platillo ya está en tus favoritos.");
+                        }
+                    }
+            
+                    // Mostrar los favoritos en la lista
+                    function mostrarFavoritos() {
+                        let listaFavoritos = document.getElementById("favoritosLista");
+                        listaFavoritos.innerHTML = "";  // Limpiar la lista actual
+                        favoritos.forEach(item => {
+                            let li = document.createElement("li");
+                            li.classList.add("list-group-item");
+                            li.textContent = `${item.nombre} - ${item.categoria}`;
+                            listaFavoritos.appendChild(li);
+                        });
+                    }
+            
+                    // Función para filtrar por categoría
+                    function filtrarPorCategoria() {
+                        let categoriaSeleccionada = document.getElementById("categoriaFiltro").value;
+                        let items = document.querySelectorAll("#resultados .card");
+            
+                        items.forEach(item => {
+                            let categoriaItem = item.getAttribute("data-categoria");
+            
+                            if (categoriaSeleccionada === "todos" || categoriaSeleccionada === categoriaItem) {
+                                item.style.display = "";
+                            } else {
+                                item.style.display = "none";
+                            }
+                        });
+                    }
+            
+                    // Función para buscar platillo por nombre
+                    function buscarPlatillo() {
+                        let input = document.getElementById("buscarPlatillo").value.toLowerCase();
+                        let items = document.querySelectorAll("#resultados .card");
+            
+                        items.forEach(item => {
+                            let nombrePlatillo = item.querySelector(".card-title").textContent.toLowerCase();
+            
+                            if (nombrePlatillo.includes(input)) {
+                                item.style.display = "";
+                            } else {
+                                item.style.display = "none";
+                            }
+                        });
+                    }
+                </script>
+
             </section>
         </div>
-
-    <footer>
+        <br>
+        <br>
+        <br>
+        <br>
         
-    </footer>
+        <footer class="footer">
+            <div class="container">
+            </div>
+        </footer>
 </div> 
+
 </body>  
 </html>
