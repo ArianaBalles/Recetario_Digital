@@ -1,57 +1,103 @@
 <!DOCTYPE html>
-<html lang="es">  
-<head>    
-    <title>Recetario Digital | Prueba Técnica</title>    
+<html lang="es">
+<head>
     <meta charset="UTF-8">
-    <meta name="title" content="Recetario digital">
-    <meta name="description" content="Descripción de la WEB">    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Platillo</title>
     <link href="css/bootstrap.css" rel="stylesheet">
-    <script src="js/bootstrap.js"></script>  
-</head>  
-<body>  
-    <div>
-        <header>
-            <nav class="navbar navbar-expand-lg principal navbar-dark">
-                <div class="container">
-                    <a class="navbar-brand textologo" href="#">
-                        <img class="imglogo" src="img/logo_recetario.png" alt="Logo">
-                        Recetario Digital
-                    </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav ms-auto">
-                            <li class="nav-item"><a class="nav-link" href="#">Cerrar Sesión</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </header>
-        
-        <div class="container tardetalle">
-            <div class="card mb-3" style="max-width: 1500px;">
-                <div class="row g-0">
-                  <div class="col-md-4">
-                    <img src="..." class="img-fluid rounded-start" alt="...">
-                  </div>
-                  <div class="col-md-8">
-                    <div class="card-body">
-                      <h5 class="card-title">Nombre</h5>
-                      <p class="card-text">Estilo:</p>
-                      <p class="card-text">Método de preparación:</p>
-                      <p class="card-text">Ingredientes:</p>
-                      <p class="card-text">Candidatos:</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-        </div>
-        <footer class="footer">
+    <script src="js/bootstrap.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg principal navbar-dark">
             <div class="container">
+                <a class="navbar-brand textologo" href="#">
+                    <img class="imglogo" src="img/logo_recetario.png" alt="Logo">
+                    Recetario Digital
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="login.html">Cerrar Sesión</a></li>
+                    </ul>
+                </div>
             </div>
-        </footer>
-</div> 
+        </nav>
+    </header>
+    <div class="container tardetalle mt-4">
+        <a href="index.html" class="btn btn-primary mb-3">Volver</a>
+        
+        <div class="card">
+            <div class="row g-0">
+                <!-- Imagen del platillo -->
+                <div class="col-md-4">
+                    <img id="imagenPlatillo" class="img-fluid rounded-start" alt="Imagen del platillo">
+                </div>
+                
+                <div class="col-md-8">
+                    <div class="card-body descripcion">
+                        <h5 id="tituloPlatillo" class="card-title"></h5>
+                        <p class="card-text"><strong>Categoría:</strong> <span id="categoria"></span></p>
+                        <p class="card-text"><strong>Origen:</strong> <span id="origen"></span></p>
+                        <p class="card-text"><strong>Ingredientes:</strong></p>
+                        <ul id="ingredientes"></ul>
+                        <p class="card-text"><strong>Instrucciones:</strong></p>
+                        <p id="instrucciones"></p>
+                        <a id="video" target="_blank" class="btn btn-danger">Ver Video</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="container">
+        </div>
+    </footer>
 
-</body>  
+    <script>
+        // Obtener el ID del platillo desde la URL
+        const params = new URLSearchParams(window.location.search);
+        const idMeal = params.get("id");
+    
+        async function cargarDetalle() {
+            if (!idMeal) return;
+    
+            try {
+                let res = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`);
+                let data = await res.json();
+                let meal = data.meals[0];
+    
+                document.getElementById("tituloPlatillo").textContent = meal.strMeal;
+                document.getElementById("imagenPlatillo").src = meal.strMealThumb;
+                document.getElementById("categoria").textContent = meal.strCategory || "No disponible";
+                document.getElementById("origen").textContent = meal.strArea || "Desconocido";
+                document.getElementById("instrucciones").textContent = meal.strInstructions;
+                document.getElementById("video").href = meal.strYoutube || "#";
+    
+                // Cargar ingredientes
+                let ingredientesLista = document.getElementById("ingredientes");
+                ingredientesLista.innerHTML = "";
+                for (let i = 1; i <= 20; i++) {
+                    let ingrediente = meal[`strIngredient${i}`];
+                    let medida = meal[`strMeasure${i}`];
+                    if (ingrediente && ingrediente.trim() !== "") {
+                        let li = document.createElement("li");
+                        li.textContent = `${medida} ${ingrediente}`;
+                        ingredientesLista.appendChild(li);
+                    }
+                }
+    
+            } catch (error) {
+                console.error("Error al obtener los detalles:", error);
+            }
+        }
+    
+        // Cargar la información cuando la página cargue
+        document.addEventListener("DOMContentLoaded", cargarDetalle);
+    </script>
+    
+</body>
 </html>

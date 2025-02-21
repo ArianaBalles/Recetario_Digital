@@ -46,8 +46,13 @@
                 <p class="textosecundario">NUESTRAS OPCIONES</p>
               
                 <div class="container">
-                    <!-- Filtro por Categorías -->
                     <div class="row">
+                        <!-- Buscador de Platillos -->
+                        <div class="col-12 col-md-6">
+                            <p class="textopciones">Buscar Platillo (por nombre, ingrediente o tag)</p>
+                            <input type="text" class="form-control" id="buscarPlatillo" placeholder="Escribe aquí..." onkeyup="buscarPlatillo()">
+                        </div>
+                        <!-- Filtro por Categorías -->
                         <div class="col-12 col-md-6">
                             <p class="textopciones">Filtrar por Categoría</p>
                             <select class="form-select" id="categoriaFiltro" onchange="filtrarPorCategoria()">
@@ -58,57 +63,10 @@
                                 <option value="bebidas">Bebidas</option>
                             </select>
                         </div>
-            
-                        <!-- Buscador de Platillos -->
-                        <div class="col-12 col-md-6">
-                            <p class="textopciones">Buscar Platillo</p>
-                            <input type="text" class="form-control" id="buscarPlatillo" placeholder="Buscar platillo..." onkeyup="buscarPlatillo()">
-                        </div>
                     </div>
             <br>
-                    <!-- Resultados de Platillos -->
-                    <div class="row resultados-container descripcion" id="resultados">
-                        <div class="col-12 col-md-4">
-                            <div class="card" data-categoria="entradas">
-                                <img src="platillo1.jpg" class="card-img-top" alt="Platillo 1">
-                                <div class="card-body">
-                                    <h5 class="card-title">Ensalada César</h5>
-                                    <p class="card-text">Entrada fresca con lechuga, pollo y aderezo.</p>
-                                    <button class="btn btn-favorito" onclick="agregarFavorito('Ensalada César', 'entrada')">Agregar a Favoritos</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-4">
-                            <div class="card" data-categoria="platos-principales">
-                                <img src="platillo2.jpg" class="card-img-top" alt="Platillo 2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Pizza Margherita</h5>
-                                    <p class="card-text">Pizza clásica con tomate, queso mozzarella y albahaca.</p>
-                                    <button class="btn btn-favorito" onclick="agregarFavorito('Pizza Margherita', 'plato principal')">Agregar a Favoritos</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-4">
-                            <div class="card" data-categoria="postres">
-                                <img src="platillo3.jpg" class="card-img-top" alt="Platillo 3">
-                                <div class="card-body">
-                                    <h5 class="card-title">Tiramisú</h5>
-                                    <p class="card-text">Delicioso postre italiano con café y crema.</p>
-                                    <button class="btn btn-favorito" onclick="agregarFavorito('Tiramisú', 'postre')">Agregar a Favoritos</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-4">
-                            <div class="card" data-categoria="bebidas">
-                                <img src="platillo4.jpg" class="card-img-top" alt="Platillo 4">
-                                <div class="card-body">
-                                    <h5 class="card-title">Café Latte</h5>
-                                    <p class="card-text">Bebida suave con leche vaporizada y café espresso.</p>
-                                    <button class="btn btn-favorito" onclick="agregarFavorito('Café Latte', 'bebida')">Agregar a Favoritos</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                   <!-- FILTRADO DE CATEGORIAS -->
+                    <div class="row resultados-container descripcion" id="resultados"></div>
                     <br>
 
                     <!-- Sección de Favoritos -->
@@ -142,42 +100,141 @@
                         favoritos.forEach(item => {
                             let li = document.createElement("li");
                             li.classList.add("list-group-item");
-                            li.textContent = `${item.nombre} - ${item.categoria}`;
+                            li.textContent = `${item.nombre}`;
                             listaFavoritos.appendChild(li);
                         });
                     }
             
-                    // Función para filtrar por categoría
-                    function filtrarPorCategoria() {
-                        let categoriaSeleccionada = document.getElementById("categoriaFiltro").value;
-                        let items = document.querySelectorAll("#resultados .card");
+                    // FUNCION PARA FILTRO DE LAS CATEGORIAS
+                    document.addEventListener("DOMContentLoaded", async () => {
+                    await cargarCategorias();
+                    await cargarPlatillos();
+                });
+
+                async function cargarCategorias() {
+                    try {
+                        let res = await fetch("https://www.themealdb.com/api/json/v1/1/categories.php");
+                        let data = await res.json();
+                        let select = document.getElementById("categoriaFiltro");
+                        select.innerHTML = '<option value="todos">Todas las categorías</option>' +
+                            data.categories.map(c => `<option value="${c.strCategory.toLowerCase()}"">${c.strCategory}</option>`).join('');
+                    } catch (error) { console.error("Error: ", error); }
+                }
+
+                async function cargarPlatillos(categoria = "Seafood") {
+                    try {
+                        let res = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoria}`);
+                        let data = await res.json();
+                        mostrarPlatillos(data.meals);
+                    } catch (error) { console.error("Error: ", error); }
+                }
+
+                function mostrarPlatillos(platillos) {
+                    document.getElementById("resultados").innerHTML = platillos.map(meal => `
+                        <div class="col-6 col-md-2">
+                            <div class="card" data-categoria="${meal.strCategory ? meal.strCategory.toLowerCase() : 'otros'}" data-nombre="${meal.strMeal.toLowerCase()}">
+                                <img src="${meal.strMealThumb}" class="card-img-top" alt="${meal.strMeal}" style="height: 100px; object-fit: cover;">
+                                <div class="card-body" style="padding: 10px; text-align: center;">
+                                    <h6 class="card-title" style="font-size: 0.9rem;">${meal.strMeal}</h6>
+                                    <div class="d-flex justify-content-center">
+                                        <button class="btn btn-info btn-sm me-2" onclick="verDetalle(${meal.idMeal})">Ver</button>
+                                        <button class="btn btn-favorito btn-sm" onclick="agregarFavorito('${meal.strMeal}', '${meal.strCategory}')">❤</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`).join('');
+                }
+
+                // Función para redirigir al detalle del platillo
+                function verDetalle(idMeal) {
+                    window.location.href = `detalle.html?id=${idMeal}`;
+                }
+
+
+
+                function filtrarPorCategoria() {
+                    let categoria = document.getElementById("categoriaFiltro").value;
+                    cargarPlatillos(categoria === "todos" ? "Seafood" : categoria);
+                }
+
+                async function buscarPlatillo() {
+                    let input = document.getElementById("buscarPlatillo").value.toLowerCase();
+                    if (input.length === 0) {
+                        filtrarPorCategoria();
+                        return;
+                    }
+                    try {
+                        let res = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${input}`);
+                        let data = await res.json();
+                        if (data.meals) {
+                            mostrarPlatillos(data.meals);
+                        } else {
+                            document.getElementById("resultados").innerHTML = "<p>No se encontraron resultados.</p>";
+                        }
+                    } catch (error) { console.error("Error: ", error); }
+                }
+
+
+                    
+
+
             
-                        items.forEach(item => {
-                            let categoriaItem = item.getAttribute("data-categoria");
-            
-                            if (categoriaSeleccionada === "todos" || categoriaSeleccionada === categoriaItem) {
-                                item.style.display = "";
-                            } else {
-                                item.style.display = "none";
+                    // FUNCION DE BUSCAR PALTILLO POR NOMBRE
+                    async function buscarPlatillo() {
+                    let input = document.getElementById("buscarPlatillo").value.trim().toLowerCase();
+                    if (input.length === 0) {
+                        filtrarPorCategoria(); // Si está vacío, carga la categoría seleccionada
+                        return;
+                    }
+
+                    try {
+                        let resultados = [];
+
+                        // Buscar por nombre
+                        let resNombre = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${input}`);
+                        let dataNombre = await resNombre.json();
+                        if (dataNombre.meals) {
+                            resultados = [...dataNombre.meals];
+                        }
+
+                        // Buscar por ingrediente
+                        let resIngrediente = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${input}`);
+                        let dataIngrediente = await resIngrediente.json();
+                        if (dataIngrediente.meals) {
+                            resultados = [...resultados, ...dataIngrediente.meals];
+                        }
+
+                        // Buscar por categoría (tags)
+                        let resCategoria = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${input}`);
+                        let dataCategoria = await resCategoria.json();
+                        if (dataCategoria.meals) {
+                            resultados = [...resultados, ...dataCategoria.meals];
+                        }
+
+                        // Eliminar duplicados
+                        let resultadosUnicos = [];
+                        let ids = new Set();
+
+                        resultados.forEach(meal => {
+                            if (!ids.has(meal.idMeal)) {
+                                ids.add(meal.idMeal);
+                                resultadosUnicos.push(meal);
                             }
                         });
+
+                        // Mostrar resultados
+                        if (resultadosUnicos.length > 0) {
+                            mostrarPlatillos(resultadosUnicos);
+                        } else {
+                            document.getElementById("resultados").innerHTML = "<p>No se encontraron resultados.</p>";
+                        }
+
+                    } catch (error) {
+                        console.error("Error al buscar platillo:", error);
                     }
-            
-                    // Función para buscar platillo por nombre
-                    function buscarPlatillo() {
-                        let input = document.getElementById("buscarPlatillo").value.toLowerCase();
-                        let items = document.querySelectorAll("#resultados .card");
-            
-                        items.forEach(item => {
-                            let nombrePlatillo = item.querySelector(".card-title").textContent.toLowerCase();
-            
-                            if (nombrePlatillo.includes(input)) {
-                                item.style.display = "";
-                            } else {
-                                item.style.display = "none";
-                            }
-                        });
-                    }
+                }
+
+                
                 </script>
 
             </section>
