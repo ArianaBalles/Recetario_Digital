@@ -20,7 +20,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="login.html">Cerrar Sesión</a></li>
+                        <li class="nav-item"><a class="nav-link linksesion" onclick="cerrarSesion()">Cerrar Sesión</a></li>
                     </ul>
                 </div>
             </div>
@@ -97,6 +97,13 @@
     
         // Cargar la información cuando la página cargue
         document.addEventListener("DOMContentLoaded", cargarDetalle);
+
+        //CERRAR SESION
+        function cerrarSesion() {
+            localStorage.removeItem("sesionActiva");
+            localStorage.removeItem("usuario");
+            window.location.href = "login.html";
+        }
     </script>
     
 </body>

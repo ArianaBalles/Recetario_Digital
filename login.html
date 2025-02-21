@@ -1,22 +1,20 @@
 <!DOCTYPE html>
-<html lang="es">  
-<head>    
-    <title>Recetario Digital | Prueba Técnica</title>    
+<html lang="es">
+<head>
+    <title>Recetario Digital | Login</title>    
     <meta charset="UTF-8">
     <meta name="title" content="Recetario digital">
-    <meta name="description" content="Descripción de la WEB">    
+    <meta name="description" content="Login Recetario">    
     <link href="css/bootstrap.css" rel="stylesheet">
     <script src="js/bootstrap.js"></script>  
-</head>  
+</head>
 <style>
 body {
     background-image: url('img/pasta_back.jpg'); 
     background-size: 50%;
     background-position: right;
     background-repeat: no-repeat;
-    /* background-color: rgba(255, 255, 255, 0.5);
-    background-blend-mode: lighten; 
-} */
+}
 </style>
 <body>  
     <div class="row">
@@ -30,25 +28,54 @@ body {
     <div class="row">
         <div class="col">
             <div class="boxlogin">
-                    <div class="card-body">
-                        <h3 class="text-center textosesion">Iniciar Sesión</h3>
-                        <form>
-                            <div class="mb-3">
-                                <label for="usuario" class="form-label textosesionsec">Usuario</label>
-                                <input type="text" class="form-control" id="usuario" placeholder="Ingrese su usuario" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label textosesionsec">Contraseña</label>
-                                <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">Ingresar</button>
-                        </form>
-                    </div>
-                
+                <div class="card-body">
+                    <h3 class="text-center textosesion">Iniciar Sesión</h3>
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="usuario" class="form-label textosesionsec">Usuario</label>
+                            <input type="text" class="form-control" id="usuario" placeholder="Ingrese su usuario" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label textosesionsec">Contraseña</label>
+                            <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+                        <p id="errorMensaje" style="color:red; text-align:center; margin-top:10px;"></p>
+                    </form>
+                </div>
             </div>
         </div>
-
     </div> 
 
+    <script>
+        // Credenciales de prueba
+        const usuarioValido = "usuario";
+        const passwordValido = "123456";
+
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Evita el envío del formulario
+
+            let usuario = document.getElementById("usuario").value;
+            let password = document.getElementById("password").value;
+            let errorMensaje = document.getElementById("errorMensaje");
+
+            if (usuario === usuarioValido && password === passwordValido) {
+                // Guardar sesión en localStorage
+                localStorage.setItem("sesionActiva", "true");
+                localStorage.setItem("usuario", usuario);
+                // Redirigir a la página principal
+                window.location.href = "index.html";
+            } else {
+                errorMensaje.textContent = "Usuario o contraseña incorrectos";
+            }
+        });
+
+        // Verificar si ya hay sesión activa
+        window.onload = function() {
+            if (localStorage.getItem("sesionActiva") === "true") {
+                window.location.href = "index.html";
+            }
+        };
+    </script>
 </body>  
 </html>

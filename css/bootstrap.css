@@ -103,7 +103,9 @@ padding-top: 15px;
   background-color: #fff !important;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
 }
-
+.linksesion{
+  cursor: pointer;
+}
 .logoprincipal{
   color: #228b22;
   font-weight: bold;
@@ -3044,7 +3046,9 @@ textarea.form-control-lg {
   background-color: #228b22;
   border-color: #228b22;
 }
-
+.espaciobtn{
+  margin-left: 25px;
+}
 .btn-secondary {
   color: #fff;
   background-color: #6c757d;
@@ -4332,6 +4336,7 @@ textarea.form-control-lg {
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
+  margin-bottom: 10px;
 }
 .card > hr {
   margin-right: 0;
