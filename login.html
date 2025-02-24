@@ -4,17 +4,20 @@
     <title>Recetario Digital | Login</title>    
     <meta charset="UTF-8">
     <meta name="title" content="Recetario digital">
-    <meta name="description" content="Login Recetario">    
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <script src="js/bootstrap.js"></script>  
+    <meta name="description" content="Login Recetario"> 
+    <link href="css/recetario.css" rel="stylesheet">
+    <link href="css/bootstrap/bootstrap.css" rel="stylesheet">
+
+    <script src="js/recetario.js"></script>
+    <script src="js/bootstrap/bootstrap.js"></script>
 </head>
 <style>
-body {
-    background-image: url('img/pasta_back.jpg'); 
-    background-size: 50%;
-    background-position: right;
-    background-repeat: no-repeat;
-}
+    body {
+        background-image: url('img/pasta_back.jpg'); 
+        background-size: 50%;
+        background-position: right;
+        background-repeat: no-repeat;
+    }
 </style>
 <body>  
     <div class="row">
@@ -40,42 +43,40 @@ body {
                             <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" required>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Ingresar</button>
-                        <p id="errorMensaje" style="color:red; text-align:center; margin-top:10px;"></p>
+                        <p id="errorMensaje" class="mensajerror"></p>
                     </form>
+                    <p class="text-center mt-3 linkinferiror">
+                        ¿No tienes cuenta? 
+                        <br>
+                        <a href="registro.html">Regístrate aquí</a>
+                    </p>  
                 </div>
             </div>
         </div>
     </div> 
 
-    <script>
-        // Credenciales de prueba
-        const usuarioValido = "usuario";
-        const passwordValido = "123456";
 
+
+    <script>
         document.getElementById("loginForm").addEventListener("submit", function(event) {
             event.preventDefault(); // Evita el envío del formulario
-
+    
             let usuario = document.getElementById("usuario").value;
             let password = document.getElementById("password").value;
             let errorMensaje = document.getElementById("errorMensaje");
-
-            if (usuario === usuarioValido && password === passwordValido) {
-                // Guardar sesión en localStorage
+    
+            let usuarioGuardado = localStorage.getItem("usuarioRegistrado");
+            let passwordGuardado = localStorage.getItem("passwordRegistrado");
+    
+            if (usuario === usuarioGuardado && password === passwordGuardado) {
                 localStorage.setItem("sesionActiva", "true");
                 localStorage.setItem("usuario", usuario);
-                // Redirigir a la página principal
                 window.location.href = "index.html";
             } else {
                 errorMensaje.textContent = "Usuario o contraseña incorrectos";
             }
         });
-
-        // Verificar si ya hay sesión activa
-        window.onload = function() {
-            if (localStorage.getItem("sesionActiva") === "true") {
-                window.location.href = "index.html";
-            }
-        };
     </script>
+    
 </body>  
 </html>
