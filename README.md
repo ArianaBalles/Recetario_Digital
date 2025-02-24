@@ -24,6 +24,7 @@ Este proyecto cuenta con cuatro vistas:
 ![image](https://github.com/user-attachments/assets/36e9df28-b7e6-4974-90ee-8f609fac5d3c)
 
 - DETALLE
+
   ![image](https://github.com/user-attachments/assets/85b7b6b6-7e3e-446e-902f-eeabef6821bb)
   
 
