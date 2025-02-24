@@ -1,262 +1,82 @@
 <!DOCTYPE html>
-<html lang="es">  
-<head>    
-    <title>Recetario Digital | Inicio</title>    
+<html lang="es">
+<head>
+    <title>Recetario Digital | Login</title>    
     <meta charset="UTF-8">
     <meta name="title" content="Recetario digital">
-    <meta name="description" content="Inicio de Recetario">
+    <meta name="description" content="Login Recetario"> 
     <link href="css/recetario.css" rel="stylesheet">
     <link href="css/bootstrap/bootstrap.css" rel="stylesheet">
 
     <script src="js/recetario.js"></script>
-    <script src="js/bootstrap/bootstrap.js"></script> 
-</head>  
+    <script src="js/bootstrap/bootstrap.js"></script>
+</head>
+<style>
+    body {
+        background-image: url('img/pasta_back.jpg'); 
+        background-size: 50%;
+        background-position: right;
+        background-repeat: no-repeat;
+    }
+</style>
 <body>  
-    <div>
-        <header>
-            <nav class="navbar navbar-expand-lg principal navbar-dark">
-                <div class="container">
-                    <a class="navbar-brand textologo" href="login.html">
-                        <img class="imglogo" src="img/logo_recetario.png" alt="Logo">
-                        Recetario Digital
-                    </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav ms-auto">
-                            <li class="nav-item"><a class="nav-link linksesion" onclick="cerrarSesion()">Cerrar Sesión</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </header>
-
-        <div class="txtbienvenida">
-            <h1>Recetario Digital</h1>      
-        </div>    
-
-        <div class="container">
-            <div class="row">
-                <div class="col descripcion">
-                    Este lugar está especialmente diseñado para los amantes de la cocina. Te compartiremos una gran cantidad de recetas prácticas y deliciosas para degustar en familia o en reuniones. ¡Te acompañaremos paso a paso en la elección de tu platillo perfecto!
-                </div>
-            </div>
-            
-            <section>      
-                <p class="textosecundario">NUESTRAS OPCIONES</p>
-
-                <div class="container">
-                    <div class="row">
-                        <!-- Buscador de Platillos -->
-                        <div class="col-12 col-md-6">
-                            <p class="textopciones">Buscar Platillo (por nombre, ingrediente o tag)</p>
-                            <input type="text" class="form-control" id="buscarPlatillo" placeholder="Escribe aquí..." onkeyup="buscarPlatillo()">
-                        </div>
-                        <!-- Filtro por Categorías -->
-                        <div class="col-12 col-md-6">
-                            <p class="textopciones">Filtrar por Categoría</p>
-                            <select class="form-select" id="categoriaFiltro" onchange="filtrarPorCategoria()">
-                                <option value="todos">Todas las categorías</option>
-                            </select>
-                        </div>
-                    </div>
-                    <br>
-
-                    <!-- Resultados de platillos -->
-                    <div class="row resultados-container descripcion" id="resultados"></div>
-                    <br>
-
-                    <!-- Sección de Favoritos -->
-                    <div class="favoritos-container">
-                        <p class="textosecundario">MI LISTA DE FAVORITOS</p><hr>
-                        <div class="col-4">
-                            <ul id="favoritosLista" class="list-group"></ul>
-                        </div>
-                        <div class="col-8"></div>
-                    </div>
-                </div>
-            </section>
+    <div class="row">
+        <div class="col logoprincipal">
+            <center>
+                <p>Recetario Digital</p>
+                <img class="imglogo" src="img/logologin.png" alt="Logo">
+            </center>
         </div>
     </div>
+    <div class="row">
+        <div class="col">
+            <div class="boxlogin">
+                <div class="card-body">
+                    <h3 class="text-center textosesion">Iniciar Sesión</h3>
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="usuario" class="form-label textosesionsec">Usuario</label>
+                            <input type="text" class="form-control" id="usuario" placeholder="Ingrese su usuario" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label textosesionsec">Contraseña</label>
+                            <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+                        <p id="errorMensaje" class="mensajerror"></p>
+                    </form>
+                    <p class="text-center mt-3 linkinferiror">
+                        ¿No tienes cuenta? 
+                        <br>
+                        <a href="registro.html">Regístrate aquí</a>
+                    </p>  
+                </div>
+            </div>
+        </div>
+    </div> 
 
-    <footer class="footer"></footer>
 
 
     <script>
-        // FAVORITOS
-        let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
-
-        function guardarFavoritos() {
-            localStorage.setItem("favoritos", JSON.stringify(favoritos));
-        }
-
-        function agregarFavorito(nombre, categoria, idMeal) {
-            let favorito = { nombre, categoria, idMeal };
-
-            if (!favoritos.some(item => item.idMeal === idMeal)) {
-                favoritos.push(favorito);
-                guardarFavoritos();
-                mostrarFavoritos();
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Evita el envío del formulario
+    
+            let usuario = document.getElementById("usuario").value;
+            let password = document.getElementById("password").value;
+            let errorMensaje = document.getElementById("errorMensaje");
+    
+            let usuarioGuardado = localStorage.getItem("usuarioRegistrado");
+            let passwordGuardado = localStorage.getItem("passwordRegistrado");
+    
+            if (usuario === usuarioGuardado && password === passwordGuardado) {
+                localStorage.setItem("sesionActiva", "true");
+                localStorage.setItem("usuario", usuario);
+                window.location.href = "principal.html";
             } else {
-                alert("Este platillo ya está en tus favoritos.");
+                errorMensaje.textContent = "Usuario o contraseña incorrectos";
             }
-        }
-
-        function eliminarFavorito(idMeal) {
-            favoritos = favoritos.filter(item => item.idMeal !== idMeal);
-            guardarFavoritos();
-            mostrarFavoritos();
-        }
-
-        function mostrarFavoritos() {
-            let listaFavoritos = document.getElementById("favoritosLista");
-            listaFavoritos.innerHTML = "";
-
-            favoritos.forEach(item => {
-                let li = document.createElement("li");
-                li.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
-
-                let link = document.createElement("a");
-                link.href = `detalle.html?id= ${item.idMeal}`;
-                link.textContent = item.nombre;
-                link.classList.add("text-decoration-none", "text-dark");
-
-                let btnEliminar = document.createElement("button");
-                btnEliminar.innerHTML = "Eliminar";
-                btnEliminar.classList.add("btn", "btn-danger", "btn-sm", "espaciobtn");
-                btnEliminar.onclick = () => eliminarFavorito(item.idMeal);
-
-                li.appendChild(link);
-                li.appendChild(btnEliminar);
-                listaFavoritos.appendChild(li);
-            });
-        }
-
-        document.addEventListener("DOMContentLoaded", async () => {
-            mostrarFavoritos();
-            await cargarCategorias();
-            await cargarPlatillos();
         });
-
-
-        // BUSCAR POR CATEGORIAS
-        async function cargarCategorias() {
-            try {
-                let res = await fetch("https://www.themealdb.com/api/json/v1/1/categories.php");
-                let data = await res.json();
-                let select = document.getElementById("categoriaFiltro");
-                select.innerHTML += data.categories.map(c => `<option value="${c.strCategory.toLowerCase()}">${c.strCategory}</option>`).join('');
-            } catch (error) { console.error("Error: ", error); }
-        }
-
-        async function cargarPlatillos(categoria = "Seafood") {
-            try {
-                let res = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoria}`);
-                let data = await res.json();
-                mostrarPlatillos(data.meals);
-            } catch (error) { console.error("Error: ", error); }
-        }
-
-        function mostrarPlatillos(platillos) {
-            document.getElementById("resultados").innerHTML = platillos.map(meal => `
-                <div class="col-6 col-md-2">
-                    <div class="card">
-                        <img src="${meal.strMealThumb}" class="card-img-top" alt="${meal.strMeal}" style="height: 100px; object-fit: cover;">
-                        <div class="card-body text-center">
-                            <h6 class="card-title" style="font-size: 0.9rem;">${meal.strMeal}</h6>
-                            <div class="d-flex justify-content-center">
-                                <button class="btn btn-info btn-sm me-2" onclick="verDetalle(${meal.idMeal})">Ver</button>
-                                <button class="btn btn-favorito btn-sm" onclick="agregarFavorito('${meal.strMeal}', 'Seafood', '${meal.idMeal}')">❤</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>`).join('');
-        }
-
-        function verDetalle(idMeal) {
-            window.location.href = `detalle.html?id=${idMeal}`;
-        }
-
-        function filtrarPorCategoria() {
-            let categoria = document.getElementById("categoriaFiltro").value;
-            cargarPlatillos(categoria === "todos" ? "Seafood" : categoria);
-        }
-
-
-        // BUSCAR POR PLATILLO
-        async function buscarPlatillo() {
-            let input = document.getElementById("buscarPlatillo").value.trim().toLowerCase();
-            if (input.length === 0) {
-                filtrarPorCategoria(); // Si el campo está vacío, carga la categoría seleccionada
-                return;
-            }
-
-            try {
-                let resultados = [];
-
-                // Buscar por nombre
-                let resNombre = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${input}`);
-                let dataNombre = await resNombre.json();
-                if (dataNombre.meals) {
-                    resultados = [...dataNombre.meals];
-                }
-
-                // Buscar por ingrediente
-                let resIngrediente = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${input}`);
-                let dataIngrediente = await resIngrediente.json();
-                if (dataIngrediente.meals) {
-                    let detalles = await Promise.all(dataIngrediente.meals.map(async meal => {
-                        let res = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal.idMeal}`);
-                        let detail = await res.json();
-                        return detail.meals[0];
-                    }));
-                    resultados = [...resultados, ...detalles];
-                }
-
-                // Buscar por categoría (tag)
-                let resCategoria = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${input}`);
-                let dataCategoria = await resCategoria.json();
-                if (dataCategoria.meals) {
-                    let detalles = await Promise.all(dataCategoria.meals.map(async meal => {
-                        let res = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal.idMeal}`);
-                        let detail = await res.json();
-                        return detail.meals[0];
-                    }));
-                    resultados = [...resultados, ...detalles];
-                }
-
-                // Eliminar duplicados por ID
-                let resultadosUnicos = [];
-                let ids = new Set();
-                resultados.forEach(meal => {
-                    if (!ids.has(meal.idMeal)) {
-                        ids.add(meal.idMeal);
-                        resultadosUnicos.push(meal);
-                    }
-                });
-
-                // Mostrar resultados
-                if (resultadosUnicos.length > 0) {
-                    mostrarPlatillos(resultadosUnicos);
-                } else {
-                    document.getElementById("resultados").innerHTML = "<p>No se encontraron resultados.</p>";
-                }
-
-            } catch (error) {
-                console.error("Error al buscar platillo:", error);
-            }
-        }
-
-        
-        //CERRAR SESION
-        function cerrarSesion() {
-            localStorage.removeItem("sesionActiva");
-            localStorage.removeItem("usuario");
-            window.location.href = "login.html";
-        }
-   </script>
-
-
+    </script>
+    
 </body>  
 </html>
