@@ -10,5 +10,6 @@ Esta prueba técnica cumple con los requisitos solicitados en: https://gist.gith
 
 # FUNCIONALIDAD
 Este proyecto cuenta con cuatro vistas:
-##LOGIN
+
+-LOGIN
 ![image](https://github.com/user-attachments/assets/55ae187c-4f5a-4b23-8082-615d2653195d)
