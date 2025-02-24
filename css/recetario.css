@@ -14,7 +14,10 @@
 color: #838080;
 padding-top: 15px;
 }
-
+.textomenu{
+  color: #838080;
+  font-weight: bold;
+}
 .principal {
   background-color: #fff !important;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
