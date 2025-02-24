@@ -26,4 +26,12 @@ Este proyecto cuenta con cuatro vistas:
 - DETALLE
   ![image](https://github.com/user-attachments/assets/85b7b6b6-7e3e-446e-902f-eeabef6821bb)
 
-#ESPECIFICACIONES 
+#LIGA DE PROYECTO
+
+
+# ESPECIFICACIONES DE PROYECTO
+Este proyecto se desarrollo con javascript y html usando el framework Bootstrap version "v5.0.2" (https://getbootstrap.com/docs/5.0/getting-started/download/), se realizo la consulta a [The Meal DB API](https://www.themealdb.com/api.php) para la extracción de la información requerida.
+
+
+
+
