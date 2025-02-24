@@ -18,6 +18,12 @@ Este proyecto cuenta con cuatro vistas:
 ![image](https://github.com/user-attachments/assets/1cea3edc-3f1a-473f-b1b2-74e8a3e0fa93)
 
 - INICIO
+![image](https://github.com/user-attachments/assets/7e77b06c-a27b-494b-bff9-a89d0c8a6e4b)
+
+-Sección de Platillos Favoritos
+![image](https://github.com/user-attachments/assets/36e9df28-b7e6-4974-90ee-8f609fac5d3c)
 
 - DETALLE
-  
+  ![image](https://github.com/user-attachments/assets/85b7b6b6-7e3e-446e-902f-eeabef6821bb)
+
+#ESPECIFICACIONES 
