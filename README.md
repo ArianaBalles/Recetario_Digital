@@ -23,8 +23,7 @@ Este proyecto cuenta con cuatro vistas:
 - INICIO (Sección de Platillos Favoritos)
 ![image](https://github.com/user-attachments/assets/36e9df28-b7e6-4974-90ee-8f609fac5d3c)
 
-- INICIO
-  
+- DETALLE
   ![image](https://github.com/user-attachments/assets/85b7b6b6-7e3e-446e-902f-eeabef6821bb)
   
 
@@ -32,7 +31,7 @@ Este proyecto cuenta con cuatro vistas:
 
 
 # ESPECIFICACIONES DE PROYECTO
-Este proyecto se desarrollo con javascript y html usando el framework Bootstrap version "v5.0.2" (https://getbootstrap.com/docs/5.0/getting-started/download/), se realizo la consulta a [The Meal DB API](https://www.themealdb.com/api.php) para la extracción de la información requerida.
+Este proyecto se desarrollo con javascript y html usando el framework Bootstrap version "v5.0.2" (https://getbootstrap.com/docs/5.0/getting-started/download/), se realizo la consulta a [The Meal DB API](https://www.themealdb.com/api.php) para la extracción de la información requerida y realice los test de la API con Postman.
 
 
 
